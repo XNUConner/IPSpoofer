@@ -79,6 +79,12 @@ int main(int argc, char** argv) {
 	unsigned char datagram[datagram_size];
 	memcpy(datagram, &ip_header, sizeof(struct ip));
 	memcpy(datagram+sizeof(struct ip), &udp_header, sizeof(struct udphdr));
+
+    // sendto() destination 
+	struct sockaddr_in destaddr;
+	destaddr.sin_family = AF_INET;
+	destaddr.sin_port = htons(dest_port);
+	destaddr.sin_addr.s_addr = inet_addr(dest_addr);
 }
 
 void signalCatch(int socket) {

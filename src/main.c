@@ -44,6 +44,28 @@ int main(int argc, char** argv) {
         fprintf(stderr, "ERROR: packet_size must be >= 29\n");
         return -1;
     }
+
+    // IP header
+	struct ip ip_header;
+	ip_header.ip_hl = sizeof(struct ip) / 4; // Header length is size of header in 32bit words, always 5.
+	ip_header.ip_v = 4;						 // IPv4
+	ip_header.ip_tos = 0; 					 // Type of service, See RFC for explanation.
+	ip_header.ip_len = htons(sizeof(struct ip) + sizeof(struct udphdr) + datalen);
+	ip_header.ip_id = 0; 					 // Can be incremented each time by setting datagram[4] to an unsigned short.
+	ip_header.ip_off = 0;					 // Fragment offset, see RFC for explanation.
+	ip_header.ip_ttl = IPDEFTTL;			 // Time to live, default 60.
+	ip_header.ip_p = IPPROTO_UDP;			 // Using UDP protocol.
+	ip_header.ip_sum = 0;				     // Checksum, set by kernel.
+
+	// Source IP
+	struct in_addr src_ip;
+	src_ip.s_addr = inet_addr(src_addr);
+	ip_header.ip_src = src_ip;
+
+	// Destination IP
+	struct in_addr dst_ip;
+	dst_ip.s_addr = inet_addr(dest_addr);
+	ip_header.ip_dst = dst_ip;
 }
 
 void signalCatch(int socket) {

@@ -73,6 +73,12 @@ int main(int argc, char** argv) {
 	udp_header.uh_dport = htons(dest_port);                         // Destination port.
 	udp_header.uh_ulen = htons(sizeof(struct udphdr) + datalen);    // Length of data + udp header length.
 	udp_header.uh_sum = 0;                                          // udp checksum (not set by us or kernel).
+
+    // Construct datagram
+	int datagram_size = sizeof(struct ip) + sizeof(struct udphdr) + datalen;
+	unsigned char datagram[datagram_size];
+	memcpy(datagram, &ip_header, sizeof(struct ip));
+	memcpy(datagram+sizeof(struct ip), &udp_header, sizeof(struct udphdr));
 }
 
 void signalCatch(int socket) {

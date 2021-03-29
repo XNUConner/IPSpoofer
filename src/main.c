@@ -85,6 +85,12 @@ int main(int argc, char** argv) {
 	destaddr.sin_family = AF_INET;
 	destaddr.sin_port = htons(dest_port);
 	destaddr.sin_addr.s_addr = inet_addr(dest_addr);
+
+    // Send until SIGTERM with 1 second between datagrams
+	for(;;) {
+		sendto(s, datagram, datagram_size, 0,(struct sockaddr*)&destaddr, sizeof(destaddr));
+        sleep(1);
+	}
 }
 
 void signalCatch(int socket) {

@@ -36,6 +36,14 @@ int main(int argc, char** argv) {
 
     // Capture ctrl+c
     signal(SIGINT, signalCatch);
+
+    // Calculate data length and create data buffer
+	uint16_t datalen = packet_size - ( sizeof(struct ip) + sizeof(struct udphdr)); // sizeof() will always be 20 & 8 respectively.
+	unsigned char data[datalen];
+    if(packet_size < sizeof(struct ip) + sizeof(struct udphdr) + 1) {
+        fprintf(stderr, "ERROR: packet_size must be >= 29\n");
+        return -1;
+    }
 }
 
 void signalCatch(int socket) {

@@ -66,6 +66,13 @@ int main(int argc, char** argv) {
 	struct in_addr dst_ip;
 	dst_ip.s_addr = inet_addr(dest_addr);
 	ip_header.ip_dst = dst_ip;
+
+    // UDP Header
+	struct udphdr udp_header;
+	udp_header.uh_sport = htons(src_port);                          // Source port.
+	udp_header.uh_dport = htons(dest_port);                         // Destination port.
+	udp_header.uh_ulen = htons(sizeof(struct udphdr) + datalen);    // Length of data + udp header length.
+	udp_header.uh_sum = 0;                                          // udp checksum (not set by us or kernel).
 }
 
 void signalCatch(int socket) {

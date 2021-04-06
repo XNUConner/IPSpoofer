@@ -1,5 +1,5 @@
 # IPSpoofer
-C code to spoof the source IP of a UDP datagram, more info [here](https://dev.to/conner). <br />
+C code to spoof the source IP of a UDP datagram, my full explanation can be found [here](https://dev.to/conner). <br />
 Binary sends a single 1500 byte datagram with a spoofed ip defined in `src/main.c` to a destination IP, `argv[1]` <br />
 Compatibility: Linux, FreeBSD, OpenBSD <br />
 Compilation: `make src/main` <br />
